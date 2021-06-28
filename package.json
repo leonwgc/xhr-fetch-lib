@@ -19,6 +19,7 @@
     "lint-staged": "lint-staged",
     "type": "tsc",
     "build": "father-build --cjs=rollup --esm=rollup src/index",
+    "dev": "father-build --cjs=rollup --esm=rollup --watch",
     "pub": "bash pub.sh"
   },
   "peerDependencies": {
@@ -64,8 +65,6 @@
     ]
   },
   "dependencies": {
-    "@types/json-bigint": "^1.0.0",
-    "@types/qs": "^6.9.6",
     "json-bigint": "^1.0.0",
     "qs": "^6.10.1"
   }

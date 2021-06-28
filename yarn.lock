@@ -1480,10 +1480,6 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/json-bigint@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.nlark.com/@types/json-bigint/download/@types/json-bigint-1.0.0.tgz?cache=0&sync_timestamp=1621241939747&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fjson-bigint%2Fdownload%2F%40types%2Fjson-bigint-1.0.0.tgz#7a4726540cc6fe47cfa54b9b3022b89cf7fe1517"
-
 "@types/json-schema@^7.0.7":
   version "7.0.7"
   resolved "https://registry.nlark.com/@types/json-schema/download/@types/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
@@ -1515,10 +1511,6 @@
 "@types/q@^1.5.1":
   version "1.5.4"
   resolved "https://registry.nlark.com/@types/q/download/@types/q-1.5.4.tgz?cache=0&sync_timestamp=1621242400776&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fq%2Fdownload%2F%40types%2Fq-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
-
-"@types/qs@^6.9.6":
-  version "6.9.6"
-  resolved "https://registry.nlark.com/@types/qs/download/@types/qs-6.9.6.tgz?cache=0&sync_timestamp=1621242292262&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fqs%2Fdownload%2F%40types%2Fqs-6.9.6.tgz#df9c3c8b31a247ec315e6996566be3171df4b3b1"
 
 "@types/react-dom@^16.8.0":
   version "16.9.13"
