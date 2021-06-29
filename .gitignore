@@ -2,3 +2,4 @@
 node_modules
 *.html
 .eslintcache
+#yarn-error.log
