@@ -105,4 +105,21 @@ var fetch = function fetch(_ref) {
   });
 };
 
+var fetchGen = function fetchGen(method) {
+  return function (url, data, headers) {
+    return fetch({
+      method: method,
+      url: url,
+      data: data,
+      headers: headers
+    });
+  };
+};
+
+var get = fetchGen('get');
+var post = fetchGen('post');
+var put = fetchGen('put');
+var del = fetchGen('delete');
+
 export default fetch;
+export { del, get, post, put };

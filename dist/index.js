@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var qs = require('qs');
 var JSONbig = require('json-bigint');
 
@@ -112,4 +114,24 @@ var fetch = function fetch(_ref) {
   });
 };
 
-module.exports = fetch;
+var fetchGen = function fetchGen(method) {
+  return function (url, data, headers) {
+    return fetch({
+      method: method,
+      url: url,
+      data: data,
+      headers: headers
+    });
+  };
+};
+
+var get = fetchGen('get');
+var post = fetchGen('post');
+var put = fetchGen('put');
+var del = fetchGen('delete');
+
+exports.default = fetch;
+exports.del = del;
+exports.get = get;
+exports.post = post;
+exports.put = put;

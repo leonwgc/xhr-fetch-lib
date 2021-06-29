@@ -97,3 +97,18 @@ const fetch = ({
 };
 
 export default fetch;
+
+const fetchGen =
+  (method: 'get' | 'post' | 'put' | 'delete' | 'head') =>
+  (
+    url: string,
+    data: Record<string, unknown> | null,
+    headers?: Record<string, string>
+  ): Promise<unknown> => {
+    return fetch({ method, url, data, headers });
+  };
+
+export const get = fetchGen('get');
+export const post = fetchGen('post');
+export const put = fetchGen('put');
+export const del = fetchGen('delete');
