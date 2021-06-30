@@ -48,7 +48,7 @@ function getQueryString(object: Record<string, unknown>) {
 export type Options = {
   method?: 'get' | 'post' | 'put' | 'delete' | 'head';
   url: string;
-  data?: Record<string, unknown> | null;
+  data?: Record<string, unknown> | string;
   headers?: Record<string, string>;
   withCredentials?: boolean;
   responseParser?: (xhr: XMLHttpRequest) => unknown;
@@ -102,7 +102,7 @@ const fetchGen =
   (method: 'get' | 'post' | 'put' | 'delete' | 'head') =>
   (
     url: string,
-    data: Record<string, unknown> | null,
+    data: Record<string, unknown> | string | null,
     headers?: Record<string, string>
   ): Promise<unknown> => {
     return fetch({ method, url, data, headers });
