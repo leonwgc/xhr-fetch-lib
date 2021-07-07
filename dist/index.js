@@ -73,7 +73,9 @@ var fetch = function fetch(_ref) {
       _ref$withCredentials = _ref.withCredentials,
       withCredentials = _ref$withCredentials === void 0 ? true : _ref$withCredentials,
       _ref$responseParser = _ref.responseParser,
-      responseParser = _ref$responseParser === void 0 ? parseResponse : _ref$responseParser;
+      responseParser = _ref$responseParser === void 0 ? parseResponse : _ref$responseParser,
+      _ref$xhrSetting = _ref.xhrSetting,
+      xhrSetting = _ref$xhrSetting === void 0 ? null : _ref$xhrSetting;
   var postData = '';
 
   if (method === 'get') {
@@ -93,6 +95,16 @@ var fetch = function fetch(_ref) {
 
   return new Promise(function (resolve, reject) {
     var xhr = new XMLHttpRequest();
+
+    if (xhrSetting && isObject(xhrSetting)) {
+      var props = Object.keys(xhrSetting);
+
+      for (var _i = 0, _props = props; _i < _props.length; _i++) {
+        var prop = _props[_i];
+        xhr[prop] = xhrSetting[prop];
+      }
+    }
+
     xhr.open(method, url);
     xhr.withCredentials = withCredentials;
     setHeaders(xhr, headers);

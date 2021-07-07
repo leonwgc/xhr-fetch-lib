@@ -1,6 +1,6 @@
 {
   "name": "xhr-fetch-lib",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "xhr fetch request lib",
   "keywords": [
     "react",
@@ -18,8 +18,8 @@
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "type": "tsc",
-    "build": "father-build --cjs=rollup --esm=rollup src/index",
-    "dev": "father-build --cjs=rollup --esm=rollup --watch",
+    "build": "father-build",
+    "dev": "father-build --watch",
     "pub": "bash pub.sh"
   },
   "devDependencies": {

@@ -1,3 +1,8 @@
+declare type XHRSetting = {
+  responseType?: XMLHttpRequestResponseType;
+  timeout?: number;
+  [p: string]: unknown;
+};
 export declare type Options = {
   method?: 'get' | 'post' | 'put' | 'delete' | 'head';
   url: string;
@@ -5,6 +10,7 @@ export declare type Options = {
   headers?: Record<string, string>;
   withCredentials?: boolean;
   responseParser?: (xhr: XMLHttpRequest) => unknown;
+  xhrSetting?: XHRSetting;
 };
 declare const fetch: ({
   method,
@@ -13,6 +19,7 @@ declare const fetch: ({
   headers,
   withCredentials,
   responseParser,
+  xhrSetting,
 }: Options) => Promise<unknown>;
 export default fetch;
 export declare const get: (

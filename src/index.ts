@@ -45,6 +45,12 @@ function getQueryString(object: Record<string, unknown>) {
   return qs.stringify(object, { indices: false });
 }
 
+type XHRSetting = {
+  responseType?: XMLHttpRequestResponseType;
+  timeout?: number;
+  [p: string]: unknown;
+};
+
 export type Options = {
   method?: 'get' | 'post' | 'put' | 'delete' | 'head';
   url: string;
@@ -52,6 +58,7 @@ export type Options = {
   headers?: Record<string, string>;
   withCredentials?: boolean;
   responseParser?: (xhr: XMLHttpRequest) => unknown;
+  xhrSetting?: XHRSetting;
 };
 
 const fetch = ({
@@ -61,6 +68,7 @@ const fetch = ({
   headers = null,
   withCredentials = true,
   responseParser = parseResponse,
+  xhrSetting = null,
 }: Options): Promise<unknown> => {
   let postData: string | Record<string, unknown> = '';
   if (method === 'get') {
@@ -80,6 +88,12 @@ const fetch = ({
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
+    if (xhrSetting && isObject(xhrSetting)) {
+      const props = Object.keys(xhrSetting);
+      for (const prop of props) {
+        xhr[prop] = xhrSetting[prop];
+      }
+    }
     xhr.open(method, url);
     xhr.withCredentials = withCredentials;
     setHeaders(xhr, headers);
