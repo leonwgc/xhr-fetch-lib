@@ -1,6 +1,6 @@
 # xhr-fetch-lib
 
-封装了 xhr 请求，导出简单的 get,post,put,del 请求方法
+封装了 xhr 请求，导出简单的 get,post,put,delete, upload 文件上传请求方法
 
 1. 安装 ,[npm](https://npmjs.org/) / [yarn](https://yarnpkg.com) 安装
 
@@ -9,18 +9,34 @@ npm install xhr-fetch-lib
 yarn add xhr-fetch-lib
 ```
 
-2. 使用
+2. 使用示例
 
 ```js
-import fetch, { get, post, put, del } from 'xhr-fetch-lib';
+import fetch, { get, post, put, del, upload } from 'xhr-fetch-lib';
 
+// 直接调用get post put del
 get(apiUrl).then((res) => {
   responseHandler(res);
 });
 
-fetch({ method: 'get', url: apiUrl }).then((res) => {
-  responseHandler(res);
+// 用fetch设置返回blob实现下载
+fetch({
+  url,
+  method,
+  data,
+  xhrSetting: { responseType: 'blob' },
+  responseParser: (xhr) => xhr.response,
+}).then((blob) => {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.click();
 });
+
+//文件上传
+const file = e.target.files[0];
+upload(api, { key: 'value' }, file, null, (e) => console.log(e.percent));
 ```
 
 3. typescript 类型定义
@@ -33,6 +49,13 @@ export declare type Options = {
   headers?: Record<string, string>;
   withCredentials?: boolean;
   responseParser?: (xhr: XMLHttpRequest) => unknown;
+  xhrSetting?: XHRSetting;
+};
+
+declare type XHRSetting = {
+  responseType?: XMLHttpRequestResponseType;
+  timeout?: number;
+  [p: string]: unknown;
 };
 
 declare const fetch: ({
@@ -75,6 +98,17 @@ export declare const del: (
   headers?: Record<string, string>
 ) => Promise<unknown>;
 
+export default function upload(
+  url: string,
+  data: Record<string, unknown> | null,
+  file: File | Blob,
+  headers?: Record<string, string> | null,
+  onProgress?: (
+    e: ProgressEvent & {
+      percent: number;
+    }
+  ) => void
+): Promise<XMLHttpRequest>;
 ```
 
 4. 返回值
@@ -100,4 +134,6 @@ function parseResponse(xhr: XMLHttpRequest): unknown {
 
 5. 对于 get 请求， data 用 object key-value 对， 默认会转为 key=value&key1=value1 的格式， 也可以传入 key=value 字符串格式
 
-6. 默认导出的 fetch 函数， 可以自定义 responseParser ， 默认是 json-bigint.parse responseText, 也可以自定义 XMLHttpRequest 属性, 例如 responseType,timeout 等
+6. 默认导出的 fetch 函数， 可以自定义 responseParser ， 默认是 json-bigint.parse responseText
+
+7. fetch 可以自定义 XMLHttpRequest 属性, 例如 responseType,timeout 等

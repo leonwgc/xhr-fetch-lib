@@ -1,6 +1,6 @@
 {
   "name": "xhr-fetch-lib",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "xhr fetch request lib",
   "keywords": [
     "react",
