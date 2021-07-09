@@ -1,6 +1,6 @@
 import qs from 'qs';
-// JSON.parse/stringify with bigints support
 import JSONbig from 'json-bigint';
+export { default as upload } from './upload';
 
 const JSONBig = JSONbig({ storeAsString: true });
 

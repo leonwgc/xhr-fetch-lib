@@ -1,6 +1,80 @@
 import qs from 'qs';
 import JSONbig from 'json-bigint';
 
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+// upload 默认为post
+function upload(url, data, file, headers, onProgress) {
+  return new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+
+    if (typeof onProgress === 'function' && xhr.upload) {
+      xhr.upload.onprogress = function progress(e) {
+        if (e.total > 0) {
+          e.percent = e.loaded / e.total * 100;
+        }
+
+        onProgress(e);
+      };
+    }
+
+    var formData = new FormData();
+
+    if (data) {
+      Object.keys(data).forEach(function (key) {
+        var value = data[key];
+
+        if (Array.isArray(value)) {
+          value.forEach(function (item) {
+            formData.append("".concat(key, "[]"), item);
+          });
+          return;
+        }
+
+        formData.append(key, data[key]);
+      });
+    }
+
+    formData.append('file' + Date.now(), file);
+    xhr.onerror = reject;
+
+    xhr.onload = function onload() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr);
+      } else {
+        reject(xhr);
+      }
+    };
+
+    xhr.open('post', url);
+    xhr.withCredentials = true;
+
+    if (headers && _typeof(headers) === 'object') {
+      Object.keys(headers).forEach(function (h) {
+        if (headers[h] !== null) {
+          xhr.setRequestHeader(h, headers[h]);
+        }
+      });
+    }
+
+    xhr.send(formData);
+  });
+}
+
 var JSONBig = JSONbig({
   storeAsString: true
 });
@@ -134,4 +208,4 @@ var put = fetchGen('put');
 var del = fetchGen('delete');
 
 export default fetch;
-export { del, get, post, put };
+export { del, get, post, put, upload };

@@ -1,3 +1,4 @@
+export { default as upload } from './upload';
 declare type XHRSetting = {
   responseType?: XMLHttpRequestResponseType;
   timeout?: number;
