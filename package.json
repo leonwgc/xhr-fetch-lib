@@ -1,10 +1,10 @@
 {
   "name": "xhr-fetch-lib",
-  "version": "1.2.1",
-  "description": "xhr fetch request lib",
+  "version": "1.3.0",
+  "description": "简单好用的xhr请求库",
   "keywords": [
-    "react",
-    "fetch"
+    "fetch",
+    "xhr"
   ],
   "license": "MIT",
   "repository": "https://github.com/leonwgc/fetch-xhr",
@@ -17,9 +17,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint-staged": "lint-staged",
-    "type": "tsc",
-    "build": "father-build",
-    "dev": "father-build --watch",
+    "build": "father-build && tsc",
     "pub": "bash pub.sh"
   },
   "devDependencies": {

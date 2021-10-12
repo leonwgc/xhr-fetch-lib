@@ -26,7 +26,17 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
-// upload 默认为post
+/**
+ * 上传文件
+ *
+ * @export
+ * @param {string} url api地址
+ * @param {(Record<string, unknown> | null)} data 数据
+ * @param {(File | Blob)} file 待上传文件
+ * @param {(Record<string, string> | null)} [headers] 自定义请求头部
+ * @param {((e: ProgressEvent & { percent: number }) => void)} [onProgress] 上传进度回调
+ * @return {*}  {Promise<XMLHttpRequest>}
+ */
 function upload(url, data, file, headers, onProgress) {
   return new Promise(function (resolve, reject) {
     var xhr = new XMLHttpRequest();
@@ -84,9 +94,16 @@ function upload(url, data, file, headers, onProgress) {
   });
 }
 
+/* eslint-disable no-undef */
 var JSONBig = JSONbig__default['default']({
   storeAsString: true
 });
+/**
+ *  xhr返回处理
+ *
+ * @param {XMLHttpRequest} xhr
+ * @return {*}  {Record<string, unknown>}
+ */
 
 function parseResponse(xhr) {
   var result;
@@ -104,7 +121,13 @@ function hasContentType(headers) {
   return Object.keys(headers).some(function (name) {
     return name.toLowerCase() === 'content-type';
   });
-} // application/x-www-form-urlencoded / application/json
+}
+/**
+ *  request请求头设置, e.g. Content-Type: application/x-www-form-urlencoded / application/json
+ *
+ * @param {XMLHttpRequest} xhr
+ * @param {Record<string, string>} headers
+ */
 
 
 function setHeaders(xhr, headers) {
@@ -135,6 +158,20 @@ function getQueryString(object) {
   });
 }
 
+/**
+ * 基础请求
+ *
+ * @param {Options} {
+ *   method = 'get',
+ *   url = '',
+ *   data = null,
+ *   headers = null,
+ *   withCredentials = true,
+ *   responseParser = parseResponse,
+ *   xhrSetting = null
+ * }
+ * @return {*}  {Promise<unknown>}
+ */
 var fetch = function fetch(_ref) {
   var _ref$method = _ref.method,
       method = _ref$method === void 0 ? 'get' : _ref$method,
@@ -210,10 +247,18 @@ var fetchGen = function fetchGen(method) {
     });
   };
 };
+/** get请求 */
+
 
 var get = fetchGen('get');
+/** post请求 */
+
 var post = fetchGen('post');
+/** put请求 */
+
 var put = fetchGen('put');
+/** delete请求 */
+
 var del = fetchGen('delete');
 
 exports.default = fetch;

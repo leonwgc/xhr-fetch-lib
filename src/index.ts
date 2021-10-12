@@ -1,10 +1,16 @@
+/* eslint-disable no-undef */
 import qs from 'qs';
 import JSONbig from 'json-bigint';
 export { default as upload } from './upload';
 
 const JSONBig = JSONbig({ storeAsString: true });
-
-function parseResponse(xhr: XMLHttpRequest): unknown {
+/**
+ *  xhr返回处理
+ *
+ * @param {XMLHttpRequest} xhr
+ * @return {*}  {Record<string, unknown>}
+ */
+function parseResponse(xhr: XMLHttpRequest): Record<string, unknown> | string {
   let result;
 
   try {
@@ -21,7 +27,12 @@ function hasContentType(headers: Record<string, string>) {
   });
 }
 
-// application/x-www-form-urlencoded / application/json
+/**
+ *  request请求头设置, e.g. Content-Type: application/x-www-form-urlencoded / application/json
+ *
+ * @param {XMLHttpRequest} xhr
+ * @param {Record<string, string>} headers
+ */
 function setHeaders(xhr: XMLHttpRequest, headers: Record<string, string>) {
   headers = headers || {};
   if (!hasContentType(headers)) {
@@ -48,19 +59,38 @@ function getQueryString(object: Record<string, unknown>) {
 type XHRSetting = {
   responseType?: XMLHttpRequestResponseType;
   timeout?: number;
-  [p: string]: unknown;
 };
 
 export type Options = {
+  /** 请求方法 */
   method?: 'get' | 'post' | 'put' | 'delete' | 'head';
+  /** 请求url */
   url: string;
+  /** 请求数据,对于get请求， data用object默认会转为 key=value&key1=value1的格式 */
   data?: Record<string, unknown> | string;
+  /** 请求头 */
   headers?: Record<string, string>;
+  /** withCredentials设置，默认true */
   withCredentials?: boolean;
-  responseParser?: (xhr: XMLHttpRequest) => unknown;
+  /** 处理xhr响应 */
+  responseParser?: (xhr: XMLHttpRequest) => Record<string, unknown> | string;
+  /** xhr设置，e.g. responseType,timeout等设置  */
   xhrSetting?: XHRSetting;
 };
-
+/**
+ * 基础请求
+ *
+ * @param {Options} {
+ *   method = 'get',
+ *   url = '',
+ *   data = null,
+ *   headers = null,
+ *   withCredentials = true,
+ *   responseParser = parseResponse,
+ *   xhrSetting = null
+ * }
+ * @return {*}  {Promise<unknown>}
+ */
 const fetch = ({
   method = 'get',
   url = '',
@@ -69,7 +99,7 @@ const fetch = ({
   withCredentials = true,
   responseParser = parseResponse,
   xhrSetting = null,
-}: Options): Promise<unknown> => {
+}: Options): Promise<Record<string, unknown> | string> => {
   let postData: string | Record<string, unknown> = '';
   if (method === 'get') {
     if (data) {
@@ -112,17 +142,29 @@ const fetch = ({
 
 export default fetch;
 
+type simpleRequest = (
+  /** 请求url */
+  url: string,
+  /** 请求数据, 对于get请求，data用object默认会转为 key=value&key1=value1的格式 */
+  data: Record<string, unknown> | string,
+  /** 请求头 */
+  headers: Record<string, string>
+) => Promise<Record<string, unknown> | string>;
+
 const fetchGen =
-  (method: 'get' | 'post' | 'put' | 'delete' | 'head') =>
+  (method: 'get' | 'post' | 'put' | 'delete' | 'head'): simpleRequest =>
   (
     url: string,
     data: Record<string, unknown> | string | null,
     headers?: Record<string, string>
-  ): Promise<unknown> => {
+  ): Promise<Record<string, unknown> | string> => {
     return fetch({ method, url, data, headers });
   };
-
-export const get = fetchGen('get');
-export const post = fetchGen('post');
-export const put = fetchGen('put');
-export const del = fetchGen('delete');
+/** get请求 */
+export const get: simpleRequest = fetchGen('get');
+/** post请求 */
+export const post: simpleRequest = fetchGen('post');
+/** put请求 */
+export const put: simpleRequest = fetchGen('put');
+/** delete请求 */
+export const del: simpleRequest = fetchGen('delete');
